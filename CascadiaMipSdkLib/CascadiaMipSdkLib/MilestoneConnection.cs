@@ -89,7 +89,6 @@ namespace CascadiaMipSdkLib
         {
             serverId = serverId ?? MasterSite.FQID.ServerId;
             var settings = LoginSettingsCache.GetLoginSettings(serverId);
-            Console.WriteLine(settings.InstanceGuid);
             return settings.Token;
         }
 
