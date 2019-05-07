@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CascadiaMipSdkLib", "CascadiaMipSdkLib\CascadiaMipSdkLib.csproj", "{D040827E-4644-466F-A887-F6EA3E97C717}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{24D972A4-2635-4FB2-AB78-06FD41264CF6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{D040827E-4644-466F-A887-F6EA3E97C717}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D040827E-4644-466F-A887-F6EA3E97C717}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D040827E-4644-466F-A887-F6EA3E97C717}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24D972A4-2635-4FB2-AB78-06FD41264CF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24D972A4-2635-4FB2-AB78-06FD41264CF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24D972A4-2635-4FB2-AB78-06FD41264CF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24D972A4-2635-4FB2-AB78-06FD41264CF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

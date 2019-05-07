@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using VideoOS.Platform;
 using VideoOS.Platform.Login;
+using VideoOS.Platform.Messaging;
 
 namespace CascadiaMipSdkLib
 {
@@ -50,12 +51,16 @@ namespace CascadiaMipSdkLib
             while (stack.Count > 0)
             {
                 var item = stack.Pop();
-                var uri = item.FQID.ServerId.Uri;
-                _cc.Add(uri, AuthType, _loginSettings.NetworkCredential);
-                VideoOS.Platform.SDK.Environment.AddServer(uri, _cc);
-                VideoOS.Platform.SDK.Environment.Login(uri);
+                AddSite(item.FQID.ServerId.Uri);
                 item.GetChildren().ForEach(stack.Push);
             }
+        }
+
+        private void AddSite(Uri uri)
+        {
+            _cc.Add(uri, AuthType, _loginSettings.NetworkCredential);
+            VideoOS.Platform.SDK.Environment.AddServer(uri, _cc);
+            VideoOS.Platform.SDK.Environment.Login(uri);
         }
 
         public IEnumerable<Item> GetSites()
@@ -64,9 +69,28 @@ namespace CascadiaMipSdkLib
             while (stack.Count > 0)
             {
                 var item = stack.Pop();
+                if (!VideoOS.Platform.SDK.Environment.IsLoggedIn(item.FQID.ServerId.Uri))
+                {
+                    AddSite(item.FQID.ServerId.Uri);
+                }
                 yield return item;
                 item.GetChildren().ForEach(stack.Push);
             }
+        }
+
+        public CreateChannelResult<T> CreateChannel<T>(ServerId serverId = null)
+        {
+            serverId = serverId ?? MasterSite.FQID.ServerId;
+            var uri = LoginSettingsCache.GetLoginSettings(serverId).Uri;
+            return ChannelBuilder.BuildChannel<T>(uri, AuthType, _cc);
+        }
+
+        public string GetCurrentToken(ServerId serverId = null)
+        {
+            serverId = serverId ?? MasterSite.FQID.ServerId;
+            var settings = LoginSettingsCache.GetLoginSettings(serverId);
+            Console.WriteLine(settings.InstanceGuid);
+            return settings.Token;
         }
 
         public void Dispose()
