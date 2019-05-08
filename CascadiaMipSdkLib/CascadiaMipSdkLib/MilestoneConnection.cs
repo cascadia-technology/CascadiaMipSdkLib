@@ -16,6 +16,9 @@ namespace CascadiaMipSdkLib
         private LoginSettings _loginSettings;
 
         public Item MasterSite => EnvironmentManager.Instance.GetSiteItem(_loginSettings.Guid);
+
+        public Item CurrentSite { get; set; }
+
         public bool IncludeChildSites { get; set; }
 
         private string AuthType => _loginType == LoginType.Basic ? "Basic" : "Negotiate";
@@ -44,7 +47,7 @@ namespace CascadiaMipSdkLib
             VideoOS.Platform.SDK.Environment.AddServer(_uri, _cc);
             VideoOS.Platform.SDK.Environment.Login(_uri);
             _loginSettings = LoginSettingsCache.GetLoginSettings(_uri.Host, _uri.Port);
-
+            CurrentSite = MasterSite;
             if (!IncludeChildSites) return;
 
             var stack = new Stack<Item>(MasterSite.GetChildren());
@@ -69,10 +72,6 @@ namespace CascadiaMipSdkLib
             while (stack.Count > 0)
             {
                 var item = stack.Pop();
-                if (!VideoOS.Platform.SDK.Environment.IsLoggedIn(item.FQID.ServerId.Uri))
-                {
-                    AddSite(item.FQID.ServerId.Uri);
-                }
                 yield return item;
                 item.GetChildren().ForEach(stack.Push);
             }
