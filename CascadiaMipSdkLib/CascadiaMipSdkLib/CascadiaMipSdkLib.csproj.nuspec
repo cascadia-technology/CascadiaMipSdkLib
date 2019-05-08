@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>C:\Users\jhend\source\repos\jhendricks123\CascadiaMipSdkLib\CascadiaMipSdkLib\CascadiaMipSdkLib\CascadiaMipSdkLib.csproj</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <authors>Joshua Hendricks</authors>
     <owners>Cascadia Technology LLC</owners>
-	<licenseUrl>https://github.com/jhendricks123/CascadiaMipSdkLib/blob/master/LICENSE</licenseUrl>
+	<license type="expression">MIT</license>
     <projectUrl>https://github.com/jhendricks123/CascadiaMipSdkLib</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Helper library for handling authentication and WCF client generation with Milestone MIP SDK</description>
-    <releaseNotes>Initial release with support for all authentication types, Milestone Federated Architecture and WCF proxy client generation.</releaseNotes>
+    <releaseNotes>Minor changes around child site authentication</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>Cascadia Milestone XProtect Federated MFA MIPSDK</tags>
     <dependencies />
