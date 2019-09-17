@@ -38,6 +38,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +61,7 @@
     <Compile Include="CreateChannelResult.cs" />
     <Compile Include="LoginType.cs" />
     <Compile Include="MilestoneConnection.cs" />
+    <Compile Include="MipWcfServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ChannelFactoryBuilder.cs" />
     <Compile Include="ChannelSettings.cs" />

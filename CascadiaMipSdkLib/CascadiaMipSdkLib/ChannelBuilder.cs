@@ -4,6 +4,7 @@ using System.Net;
 using System.ServiceModel;
 using VideoOS.Common.Proxy.Server.WCF;
 using VideoOS.ConfigurationApi.ClientService;
+using VideoOS.Platform.Util.Svc;
 
 namespace CascadiaMipSdkLib
 {
@@ -15,7 +16,7 @@ namespace CascadiaMipSdkLib
         {
             ServicePaths.Add(typeof(IConfigurationService), "/ManagementServer/ConfigurationApiService.svc");
             ServicePaths.Add(typeof(IServerCommandService), "/ManagementServer/ServerCommandService.svc");
-
+            ServicePaths.Add(typeof(IServiceRegistrationService), "/ManagementServer/ServiceRegistrationService.svc");
         }
 
         public static CreateChannelResult<T> BuildChannel<T>(Uri uri, string authType, CredentialCache cc)
