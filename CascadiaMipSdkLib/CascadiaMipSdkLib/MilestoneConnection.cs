@@ -21,12 +21,15 @@ namespace CascadiaMipSdkLib
 
         public bool IncludeChildSites { get; set; }
 
+        public MipWcfServices Services { get; private set; }
+
         private string AuthType => _loginType == LoginType.Basic ? "Basic" : "Negotiate";
 
         public MilestoneConnection(Uri uri, LoginType loginType, string userName = null, string password = null)
         {
             _uri = uri;
             _loginType = loginType;
+            Services = new MipWcfServices(this);
             switch (loginType)
             {
                 case LoginType.Basic:
