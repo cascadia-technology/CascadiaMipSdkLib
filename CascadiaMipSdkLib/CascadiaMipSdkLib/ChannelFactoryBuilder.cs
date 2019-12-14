@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Xml;
@@ -7,14 +8,37 @@ namespace CascadiaMipSdkLib
 {
     internal static class ChannelFactoryBuilder
     {
-        public static ChannelFactory<T> BuildChannelFactory<T>(Uri uri, string authType)
+        public static ChannelFactory<T> BuildChannelFactory<T>(Uri uri, string authType, NetworkCredential nc)
         {
-            var channelFactory = new ChannelFactory<T>(
+            if (nc == null)
+            {
+                throw new ArgumentException($"No credential found for {uri}");
+            }
+
+            var factory = new ChannelFactory<T>(
                 CreateBinding(authType == AuthType.Basic),
                 new EndpointAddress(uri, EndpointIdentity.CreateSpnIdentity("host/localhost"))
             );
-            
-            return channelFactory;
+
+            if (factory.Credentials == null)
+            {
+                throw new CommunicationException("Error building WCF channel. ChannelFactory.Credentials is null.");
+            }
+
+            switch (authType)
+            {
+                case AuthType.Basic:
+                    factory.Credentials.UserName.UserName = "[BASIC]\\" + nc.UserName;
+                    factory.Credentials.UserName.Password = nc.Password;
+                    break;
+                case AuthType.Negotiate:
+                    factory.Credentials.Windows.ClientCredential = nc;
+                    break;
+                default:
+                    throw new ArgumentException($"AuthType '{authType}' is not valid. Expected {AuthType.Basic}, or {AuthType.Negotiate}.");
+            }
+
+            return factory;
         }
 
         public static System.ServiceModel.Channels.Binding CreateBinding(bool isBasic)

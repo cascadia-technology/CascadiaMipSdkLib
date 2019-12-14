@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.ServiceModel;
 using VideoOS.Common.Proxy.Server.WCF;
 using VideoOS.ConfigurationApi.ClientService;
+using VideoOS.Platform.SDK.Proxy;
+using VideoOS.Platform.Util.Security;
 using VideoOS.Platform.Util.Svc;
 
 namespace CascadiaMipSdkLib
@@ -14,9 +15,36 @@ namespace CascadiaMipSdkLib
 
         static ChannelBuilder()
         {
+            /* All Services on Management Server
+             * X = implemented
+             * not defined = need to get the wsdl and create classes, see if there's any reliance on DLL's not included with MIP SDK
+             *
+             * X ServerService
+             * X SecurityService
+             * ManagementServerService - not defined in MIPSDK
+             * RecordingServerService - not defined
+             * MediaStorageService - not defined
+             * DeviceService - not defined
+             * ViewerClientService - not defined
+             * FailoverServerService - not defined
+             * X ServerCommandService
+             * X ServiceRegistrationService
+             * X ServerProxyService
+             * X ConfigurationApiService
+             * WebViewerClientService - not defined
+             * StateService - not defined
+             * SCHDiagnosticsManager - not defined
+             * SCHMessageCreatorManager - not defined
+             * SCHMessageWatchManager - not defined
+             * SCHOperationInfoManager - not defined
+             */
             ServicePaths.Add(typeof(IConfigurationService), "/ManagementServer/ConfigurationApiService.svc");
             ServicePaths.Add(typeof(IServerCommandService), "/ManagementServer/ServerCommandService.svc");
             ServicePaths.Add(typeof(IServiceRegistrationService), "/ManagementServer/ServiceRegistrationService.svc");
+            ServicePaths.Add(typeof(IServerProxyService), "/ManagementServer/ServerProxyService.svc");
+            ServicePaths.Add(typeof(IServerService), "/ManagementServer/ServerService.svc");
+            ServicePaths.Add(typeof(ISecurityService), "/ManagementServer/SecurityService.svc");
+            
         }
 
         public static CreateChannelResult<T> BuildChannel<T>(Uri uri, string authType, CredentialCache cc)
@@ -29,24 +57,8 @@ namespace CascadiaMipSdkLib
                 Path = ServicePaths[typeof(T)]
             };
             var serviceUri = uriBuilder.Uri;
-            var factory = ChannelFactoryBuilder.BuildChannelFactory<T>(serviceUri, authType);
-            if (factory?.Credentials == null) throw new CommunicationException("Error building WCF channel");
-
-            var nc = cc.GetCredential(uri, authType);
-            if (nc == null) throw new ArgumentException($"No credential found for {uri}");
-            switch (authType)
-            {
-                case AuthType.Basic:
-                    factory.Credentials.UserName.UserName = "[BASIC]\\" + nc.UserName;
-                    factory.Credentials.UserName.Password = nc.Password;
-                    break;
-                case AuthType.Negotiate:
-                    factory.Credentials.Windows.ClientCredential = nc;
-                    break;
-                default:
-                    throw new ArgumentException($"AuthType '{authType}' is not valid. Expected {AuthType.Basic}, or {AuthType.Negotiate}.");
-            }
-
+            var factory = ChannelFactoryBuilder.BuildChannelFactory<T>(serviceUri, authType, cc.GetCredential(uri, authType));
+            
             ServicePointManager.ServerCertificateValidationCallback = ChannelSettings.RemoteCertificateValidationCallback;
             try
             {
