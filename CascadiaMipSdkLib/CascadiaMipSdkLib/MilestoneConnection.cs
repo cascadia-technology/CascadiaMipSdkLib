@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using VideoOS.Platform;
 using VideoOS.Platform.Login;
-using VideoOS.Platform.Messaging;
 
 namespace CascadiaMipSdkLib
 {
@@ -25,7 +24,7 @@ namespace CascadiaMipSdkLib
 
         private string AuthType => _loginType == LoginType.Basic ? "Basic" : "Negotiate";
 
-        public MilestoneConnection(Uri uri, LoginType loginType, string userName = null, string password = null)
+        public MilestoneConnection(Uri uri, LoginType loginType, NetworkCredential nc)
         {
             _uri = uri;
             _loginType = loginType;
@@ -34,7 +33,7 @@ namespace CascadiaMipSdkLib
             {
                 case LoginType.Basic:
                 case LoginType.Windows:
-                    _cc = new CredentialCache {{uri, AuthType, new NetworkCredential(userName, password)}};
+                    _cc = new CredentialCache {{uri, AuthType, nc}};
                     break;
                 case LoginType.WindowsCurrentUser:
                     _cc = new CredentialCache {{uri, AuthType, CredentialCache.DefaultNetworkCredentials}};
