@@ -16,21 +16,14 @@ namespace CascadiaMipSdkLib
         static ChannelBuilder()
         {
             /* All Services on Management Server
-             * X = implemented
              * not defined = need to get the wsdl and create classes, see if there's any reliance on DLL's not included with MIP SDK
              *
-             * X ServerService
-             * X SecurityService
-             * ManagementServerService - not defined in MIPSDK
+             * ManagementServerService - not defined
              * RecordingServerService - not defined
              * MediaStorageService - not defined
              * DeviceService - not defined
              * ViewerClientService - not defined
              * FailoverServerService - not defined
-             * X ServerCommandService
-             * X ServiceRegistrationService
-             * X ServerProxyService
-             * X ConfigurationApiService
              * WebViewerClientService - not defined
              * StateService - not defined
              * SCHDiagnosticsManager - not defined
